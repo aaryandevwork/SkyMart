@@ -1,6 +1,17 @@
-import { ArrowRight, Eye, Lock, Mail, Zap } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, Lock, Mail, Zap } from "lucide-react";
+import { useAuth } from "../hooks/useAuth";
 
 const LoginPage = () => {
+  const {
+    register,
+    handleSubmit,
+    loginFormSubmit,
+    errors,
+    showPassword,
+    setShowPassword,
+    navigate,
+  } = useAuth();
+
   return (
     <div className="min-h-screen bg-[#0d0d0d] flex">
       {/* LEFT SIDE */}
@@ -24,52 +35,62 @@ const LoginPage = () => {
 
           {/* Hero */}
           <div className="h-[90%] flex flex-col justify-center gap-12">
+            <div className="space-y-2 max-w-xl ">
+              <p className="uppercase  text-[#C8F400] font-semibold">
+                Welcome Back
+              </p>
 
-          <div className="space-y-2 max-w-xl ">
-            <p className="uppercase  text-[#C8F400] font-semibold">
-              Welcome Back
-            </p>
+              <h2 className="text-5xl font-bold font-syne leading-tight text-white">
+                Shop the future.
+                <br />
+                <span className="text-[#C8F400]">Today.</span>
+              </h2>
 
-            <h2 className="text-5xl font-bold font-syne leading-tight text-white">
-              Shop the future.
-              <br />
-              <span className="text-[#C8F400]">Today.</span>
-            </h2>
+              <p className="text-zinc-500 font-semibold font-syne text mt-6">
+                Thousands of products, lightning-fast delivery, and <br />
+                prices that make your wallet happy.
+              </p>
+            </div>
 
-            <p className="text-zinc-500 font-semibold font-syne text mt-6">
-              Thousands of products, lightning-fast delivery, and <br />
-               prices that make your wallet happy.
-            </p>
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-6 ">
+              <div className="border border-white rounded-2xl py-4 ">
+                <h3 className="text-center text-xl font-syne font-bold text-[#C8F400]">
+                  20K+
+                </h3>
+                <p className="text-center text-sm text-zinc-500">Products</p>
+              </div>
+              <div className="border border-white rounded-2xl py-4 ">
+                <h3 className="text-center text-xl font-syne font-bold text-[#C8F400]">
+                  50K+
+                </h3>
+                <p className="text-center text-sm text-zinc-500">Users</p>
+              </div>
+              <div className="border border-white rounded-2xl py-4 ">
+                <h3 className="text-center text-xl font-syne font-bold text-[#C8F400]">
+                  4.9★
+                </h3>
+                <p className="text-center text-sm text-zinc-500">Rating</p>
+              </div>
+            </div>
           </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-6 ">
-            <div className="border border-white rounded-2xl py-4 ">
-              <h3 className="text-center text-xl font-syne font-bold text-[#C8F400]">
-                20K+
-              </h3>
-              <p className="text-center text-sm text-zinc-500">Products</p>
-            </div>
-            <div className="border border-white rounded-2xl py-4 ">
-              <h3 className="text-center text-xl font-syne font-bold text-[#C8F400]">
-                50K+
-              </h3>
-              <p className="text-center text-sm text-zinc-500">Users</p>
-            </div>
-            <div className="border border-white rounded-2xl py-4 ">
-              <h3 className="text-center text-xl font-syne font-bold text-[#C8F400]">
-                4.9★
-              </h3>
-              <p className="text-center text-sm text-zinc-500">Rating</p>
-            </div>
-          </div>
-            </div>
         </div>
       </div>
 
       {/* RIGHT SIDE */}
 
-      <div className="flex-1 flex items-center justify-center px-6">
+      <div className="flex-1 flex flex-col gap-6 items-center justify-center px-6">
+        <div className=" lg:hidden flex items-center gap-3 h-[10%]">
+          <div className="h-10 w-10 rounded-2xl bg-[#C8F400] flex items-center justify-center">
+            <Zap className="text-black" size={18} fill="black" />
+          </div>
+
+          <h2 className="text-2xl font-syne tracking-tight font-semibold">
+            <span className="text-white">Sky</span>
+            <span className="text-[#C8F400]">Mart</span>
+          </h2>
+        </div>
+
         <div className="w-full max-w-md rounded-3xl border border-zinc-800 bg-[#131313] p-10 shadow-2xl">
           <h2 className="text-2xl font-syne font-bold text-white">Sign in</h2>
 
@@ -77,7 +98,10 @@ const LoginPage = () => {
             Enter your credentials to continue
           </p>
 
-          <form className="mt-10 space-y-3">
+          <form
+            onSubmit={handleSubmit(loginFormSubmit)}
+            className="mt-10 space-y-3"
+          >
             {/* Email */}
 
             <div className="relative">
@@ -87,11 +111,17 @@ const LoginPage = () => {
               />
 
               <input
+                {...register("email", {
+                  required: "email required",
+                })}
                 type="email"
                 placeholder="Email address"
                 className="w-full rounded-2xl border border-zinc-700 bg-[#1d1d1d] py-3 pl-12 pr-4 text-sm text-gray-400 font-semibold outline-none transition focus:border-lime-400"
               />
             </div>
+            {errors.email && (
+              <p className="text-red-600">{errors.email.message}</p>
+            )}
 
             {/* Password */}
 
@@ -102,20 +132,45 @@ const LoginPage = () => {
               />
 
               <input
-                type="password"
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Minimum 6 characters is required",
+                  },
+                })}
+                type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 className="w-full rounded-2xl border border-zinc-700 bg-[#1d1d1d] py-3 pl-12 pr-14 text-sm text-gray-400 font-semibold outline-none transition focus:border-lime-400"
               />
 
-              <Eye
-                size={15}
-                className="absolute right-5 top-1/2 -translate-y-1/2 text-zinc-500 cursor-pointer"
-              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <EyeOff
+                    size={15}
+                    className="absolute right-5 top-1/2 -translate-y-1/2 text-zinc-500 cursor-pointer"
+                  />
+                ) : (
+                  <Eye
+                    size={15}
+                    className="absolute right-5 top-1/2 -translate-y-1/2 text-zinc-500 cursor-pointer"
+                  />
+                )}
+              </button>
             </div>
+            {errors.password && (
+              <p className="text-red-600">{errors.password.message}</p>
+            )}
 
             {/* Button */}
 
-            <button className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-[#C8F400] py-3 text-md font-syne font-semibold text-black transition hover:bg-lime-300">
+            <button
+              type="submit"
+              className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-[#C8F400] py-3 text-md font-syne font-semibold text-black transition hover:bg-lime-300"
+            >
               Sign in
               <ArrowRight
                 className="transition group-hover:translate-x-1"
@@ -126,7 +181,10 @@ const LoginPage = () => {
 
           <p className="mt-5 text-center text-zinc-500">
             Don't have an account?{" "}
-            <span className="cursor-pointer font-semibold text-[#C8F400] hover:underline">
+            <span
+              onClick={() => navigate("/register")}
+              className="cursor-pointer font-semibold text-[#C8F400] hover:underline"
+            >
               Create one
             </span>
           </p>
@@ -135,15 +193,5 @@ const LoginPage = () => {
     </div>
   );
 };
-
-function StatCard({ number, text }) {
-  return (
-    <div className="rounded-3xl border border-zinc-600 bg-white/5 py-8 text-center backdrop-blur-sm">
-      <h3 className="text-4xl font-bold text-[#C8F400]">{number}</h3>
-
-      <p className="mt-2 text-lg text-zinc-400">{text}</p>
-    </div>
-  );
-}
 
 export default LoginPage;

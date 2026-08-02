@@ -9,8 +9,31 @@ import AuthLayout from "../layouts/AuthLayout";
 import MainLayout from "../layouts/MainLayout";
 import RegisterPage from "../pages/RegisterPage";
 import LoginPage from "../pages/LoginPage";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { addUser } from "../features/authSlice";
+import { useEffect } from "react";
 
 const AppRoutes = () => {
+
+  const dispatch = useDispatch();
+
+  const hydrateUser = () => {
+    console.log("hydrate user");
+    let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+    console.log("loggedInUser",loggedInUser);
+    if(!loggedInUser){
+      return;
+    }
+    dispatch(addUser(loggedInUser));
+  }
+
+  useEffect(() => {
+    hydrateUser();
+  } , [])
+
+
   let Router = createBrowserRouter([
     {
       path: "/",
