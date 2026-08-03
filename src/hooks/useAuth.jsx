@@ -34,7 +34,7 @@ export const useAuth = () => {
 
     disptach(addUser(user));
     localStorage.setItem("loggedInUser", JSON.stringify(user));
-    toast.success("User logged In");
+    toast.success(`Hello ${user.name} , login successfull..`);
     navigate("/main");
   };
 
@@ -53,7 +53,7 @@ export const useAuth = () => {
     if (checkIsUser) {
       toast.error("user already registered..");
     } else {
-      toast.success("user registered..");
+      toast.success(`Hello ${newUser.name}..`);
       setRegisteredUser(updatedUser);
       localStorage.setItem("registeredUser", JSON.stringify(updatedUser));
       localStorage.setItem("loggedInUser", JSON.stringify(newUser));
