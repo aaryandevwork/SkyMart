@@ -3,6 +3,7 @@ import ProductCard from "../components/ProductCard";
 import { categories, products, sortOptions } from "../data/data";
 import { Search } from "lucide-react";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const ShopPage = () => {
 
@@ -10,7 +11,9 @@ const ShopPage = () => {
   const [sortBy, setSortBy] = useState("Featured");
   const [search, setSearch] = useState("");
 
-  
+//   let data = useSelector(state => state.cart);
+// console.log("data from cart",data)
+
   const getFilteredData = () => {
     let filteredData = [...products];
 
@@ -43,7 +46,7 @@ const ShopPage = () => {
         filteredData.sort((a, b) => b.featured - a.featured);
         break;
     }
-    console.log("called");
+    
     return filteredData;
   };
 

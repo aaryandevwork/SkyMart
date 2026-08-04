@@ -1,6 +1,13 @@
 import { ShoppingBag, Star } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+import { addToCart } from "../features/cartSlice";
 
 const ProductCard = ({ product }) => {
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   return (
     <div
       className="
@@ -22,6 +29,7 @@ const ProductCard = ({ product }) => {
       <div className="relative overflow-hidden">
 
         <img
+          onClick={() => navigate(`/main/products/${product.id}`)}
           src={product.image}
           alt={product.title}
           className="
@@ -130,6 +138,7 @@ const ProductCard = ({ product }) => {
           {/* Add To Cart */}
 
           <button
+            onClick={() => dispatch(addToCart(product))}
             className="
             h-12
             w-12

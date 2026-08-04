@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { removeUser } from "../features/authSlice";
 import { NavLink } from "react-router";
 
-const Navbar = () => {
+const Navbar = ({setIsCartOpen}) => {
   const dispatch = useDispatch();
 
   return (
@@ -76,7 +76,7 @@ const Navbar = () => {
           {/* Cart */}
 
           <button className="w-10 h-10 rounded-xl border border-white/10 flex justify-center items-center hover:bg-zinc-900 transition">
-            <ShoppingCart size={18} />
+            <ShoppingCart onClick={() => setIsCartOpen(true)} size={18} />
           </button>
 
           {/* Logout */}

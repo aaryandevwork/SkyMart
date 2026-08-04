@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { addUser } from "../features/authSlice";
 import { useEffect } from "react";
+import ProductDetailPage from "../pages/ProductDetailPage";
 
 const AppRoutes = () => {
 
@@ -74,6 +75,10 @@ const AppRoutes = () => {
             {
               path: "shop",
               element: <ShopPage />,
+            },
+            {
+              path: "products/:id",
+              element: <ProductDetailPage />,
             },
           ],
         },
