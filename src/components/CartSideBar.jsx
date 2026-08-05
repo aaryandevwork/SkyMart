@@ -1,21 +1,22 @@
 import { ShoppingBag, X, Minus, Plus, Trash2, ArrowRight } from "lucide-react";
 import CartItem from "./CartItem";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleCart } from "../features/cartSlice";
 
 
 
-const CartSideBar = ({ isOpen, onClose }) => {
-    let { cartItems } = useSelector(state => state.cart);
+const CartSideBar = () => {
+    let { cartItems, isCartOpen } = useSelector(state => state.cart);
 
-    console.log(cartItems);
+    const dispatch = useDispatch()
 
   return (
     <>
       {/* Overlay */}
       <div
-        onClick={onClose}
+        onClick={() => dispatch(toggleCart())}
         className={`fixed inset-0 z-40 bg-black/70 backdrop-blur-md transition-all duration-300 ${
-          isOpen ? "opacity-90 visible" : "opacity-0 invisible"
+          isCartOpen ? "opacity-90 visible" : "opacity-0 invisible"
         }`}
       />
 
@@ -24,7 +25,7 @@ const CartSideBar = ({ isOpen, onClose }) => {
         className={`fixed top-0 right-0 z-50 h-screen w-[420px] bg-[#121212]
         border-l border-zinc-700 flex flex-col
         transition-transform duration-300 ease-in-out
-        ${isOpen ? "translate-x-0" : "translate-x-full"}`}
+        ${isCartOpen ? "translate-x-0" : "translate-x-full"}`}
       >
         {/* Header */}
         <div className="flex items-center justify-between px-6 h-18 border-b border-zinc-700">
@@ -39,7 +40,7 @@ const CartSideBar = ({ isOpen, onClose }) => {
           </div>
 
           <button
-            onClick={onClose}
+            onClick={() => dispatch(toggleCart())}
             className="text-zinc-400 hover:text-white transition"
           >
             <X  size={20}/>

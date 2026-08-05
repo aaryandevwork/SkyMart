@@ -6,7 +6,8 @@ const saveCart = (cartItems) => {
 };
 
 const initialState = {
-    cartItems : JSON.parse(localStorage.getItem("cart")) || []
+    cartItems : JSON.parse(localStorage.getItem("cart")) || [],
+    isCartOpen : false,
 }
 
 
@@ -14,6 +15,9 @@ const cartSlice = createSlice({
     name : "cart",
     initialState,
     reducers : {
+        toggleCart : (state) => {
+            state.isCartOpen = !state.isCartOpen;
+        },
         addToCart : (state, action) => {
             console.log("inside cart slice : ",action.payload);
             const existingItem = state.cartItems.find((item) => item.id === action.payload.id);
@@ -54,5 +58,5 @@ const cartSlice = createSlice({
     }
 })
 
-export const { addToCart,increaseQuantity ,decreaseQuantity, removeFromCart } = cartSlice.actions;
+export const { addToCart,increaseQuantity ,decreaseQuantity, removeFromCart ,toggleCart } = cartSlice.actions;
 export default cartSlice.reducer;

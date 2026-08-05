@@ -11,16 +11,23 @@ import {
   ChevronLeft,
   ChevronRight,
   Check,
+  ShoppingBag,
 } from "lucide-react";
 import { products } from "../data/data";
-
-// Import your products array
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, decreaseQuantity, increaseQuantity, toggleCart } from "../features/cartSlice";
 
 const ProductDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { cartItems } = useSelector((state) => state.cart);
+
   const product = products.find((item) => item.id === Number(id));
-  const [quantity, setQuantity] = useState(2);
+
+  const cartItem = cartItems.find((item) => item.id === product.id);
+
+  const isAdded = !!cartItem;
 
   if (!product) {
     return (
@@ -107,43 +114,52 @@ const ProductDetailPage = () => {
           <p className="text-zinc-400 leading-8 mt-3">{product.description}</p>
 
           {/* Quantity */}
+          {isAdded ? (
+            <div className="border border-zinc-700 rounded-2xl px-5 py-4 mt-4 flex justify-between items-center">
+              <p className="text-zinc-400">In cart:</p>
 
-          <div className="border border-zinc-700 rounded-2xl px-5 py-4 mt-4 flex justify-between items-center">
-            <p className="text-zinc-400">In cart:</p>
-
-            <div className="flex items-center gap-5">
-              <button
-                onClick={() => quantity > 1 && setQuantity(quantity - 1)}
-                className="w-10 h-10 text-white rounded-xl border border-zinc-700 flex items-center justify-center hover:border-[#C8F400]"
-              >
-                <Minus size={16} />
-              </button>
-
-              <span className="text-lg font-bold text-white">{quantity}</span>
-
-              <button
-                onClick={() => setQuantity(quantity + 1)}
-                className="text-white w-10 h-10 rounded-xl border border-zinc-700 flex items-center justify-center hover:border-[#C8F400]"
-              >
-                <Plus size={16} />
-              </button>
+              <div className="flex items-center gap-5">
+                <button
+                  onClick={() => dispatch(decreaseQuantity(product.id))}
+                  className="w-10 h-10 text-white rounded-xl border border-zinc-700 flex items-center justify-center hover:border-[#C8F400]"
+                >
+                  <Minus size={16} />
+                </button>
+                <span className="text-lg font-bold text-white">{cartItem?.quantity || 0}</span>
+                <button
+                  onClick={() => dispatch(increaseQuantity(product.id))}
+                  className="text-white w-10 h-10 rounded-xl border border-zinc-700 flex items-center justify-center hover:border-[#C8F400]"
+                >
+                  <Plus size={16} />
+                </button>
+              </div>
             </div>
-          </div>
+          ) : (
+            ""
+          )}
 
           {/* Buttons */}
 
           <div className="flex gap-4 mt-6">
-            <button className="flex-1 h-14 rounded-2xl bg-[#C8F400] hover:bg-[#e1edaa] text-black font-bold flex justify-center items-center gap-2">
-              <Check size={18} />
-              Added to Cart
+            <button 
+            onClick={() => {
+              !isAdded && dispatch(addToCart(product))
+              dispatch(toggleCart())
+            }}
+            disabled={isAdded}
+            className={`flex-1 h-14 rounded-2xl  font-bold flex justify-center items-center gap-2 ${isAdded ? "bg-green-950  border border-green-800  text-green-400 hover:bg-green-950" : "bg-[#C8F400] hover:bg-[#e1edaa] text-black"}`}>
+              {isAdded ? ( <div className="flex gap-5 items-center"><Check size={18} />
+              Added in Cart</div> ) : (<div className="flex gap-5 items-center"><ShoppingBag size={20} /> Add to Cart</div> )}
+              
             </button>
 
-            <button className=" text-white w-14 rounded-2xl border border-zinc-700 hover:border-red-500 flex justify-center items-center">
+            <button 
+             className=" text-white w-14 rounded-2xl border border-zinc-700 hover:border-red-500 flex justify-center items-center">
               <Heart />
             </button>
           </div>
 
-          <button className=" text-white w-full h-14 border border-zinc-700 rounded-2xl mt-5 hover:border-[#C8F400]">
+          <button onClick={() => dispatch(toggleCart())} className=" text-white w-full h-14 border border-zinc-700 rounded-2xl mt-5 hover:border-[#C8F400]">
             View Cart →
           </button>
 
@@ -184,12 +200,18 @@ const ProductDetailPage = () => {
           {/* Previous Next */}
 
           <div className="grid grid-cols-2 gap-4 mt-10">
-            <button onClick={() => navigate(`/main/products/${id-1}`)} className="text-white h-14 rounded-2xl bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center gap-2">
+            <button
+              onClick={() => navigate(`/main/products/${id - 1}`)}
+              className="text-white h-14 rounded-2xl bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center gap-2"
+            >
               <ChevronLeft size={18} />
               Previous
             </button>
 
-            <button onClick={() => navigate(`/main/products/${Number(id)+1}`)} className="h-14 rounded-2xl bg-[#C8F400] text-black hover:bg-[#a1b645] font-semibold flex items-center justify-center gap-2">
+            <button
+              onClick={() => navigate(`/main/products/${Number(id) + 1}`)}
+              className="h-14 rounded-2xl bg-[#C8F400] text-black hover:bg-[#a1b645] font-semibold flex items-center justify-center gap-2"
+            >
               Next
               <ChevronRight size={18} />
             </button>

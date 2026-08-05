@@ -1,12 +1,14 @@
-import { ShoppingBag, Star } from "lucide-react";
-import { useDispatch } from "react-redux";
+import { Check, ShoppingBag, Star } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { addToCart } from "../features/cartSlice";
+import { addToCart, toggleCart } from "../features/cartSlice";
 
 const ProductCard = ({ product }) => {
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { cartItems } = useSelector((state) => state.cart);
+
+  const isAdded = cartItems.some((item) => item.id === product.id);
 
   return (
     <div
@@ -27,7 +29,6 @@ const ProductCard = ({ product }) => {
       {/* Product Image */}
 
       <div className="relative overflow-hidden">
-
         <img
           onClick={() => navigate(`/main/products/${product.id}`)}
           src={product.image}
@@ -85,12 +86,9 @@ const ProductCard = ({ product }) => {
       {/* Body */}
 
       <div className="p-5">
-
         {/* Brand */}
 
-        <p className="text-xs text-zinc-500">
-          {product.brand}
-        </p>
+        <p className="text-xs text-zinc-500">{product.brand}</p>
 
         {/* Title */}
 
@@ -101,30 +99,18 @@ const ProductCard = ({ product }) => {
         {/* Rating */}
 
         <div className="mt-4  text-sm flex items-center gap-2">
+          <Star size={18} fill="#C7FF00" className="text-[#C8F400]" />
 
-          <Star
-            size={18}
-            fill="#C7FF00"
-            className="text-[#C8F400]"
-          />
+          <span className="text-white font-medium">{product.rating}</span>
 
-          <span className="text-white font-medium">
-            {product.rating}
-          </span>
-
-          <span className="text-zinc-500">
-            ({product.reviews})
-          </span>
-
+          <span className="text-zinc-500">({product.reviews})</span>
         </div>
 
         <div className="w-full h-[1px] bg-white my-2"></div>
         {/* Price */}
 
         <div className="mt-2 flex  items-center justify-between">
-
           <div className="flex items-end gap-2">
-
             <span className="text-sm font-bold text-[#C8F400]">
               ${product.price}
             </span>
@@ -132,31 +118,25 @@ const ProductCard = ({ product }) => {
             <span className="text-sm text-zinc-500 line-through">
               ${product.oldPrice}
             </span>
-
           </div>
 
           {/* Add To Cart */}
 
           <button
-            onClick={() => dispatch(addToCart(product))}
-            className="
-            h-12
-            w-12
-            rounded-2xl
-            bg-[#C8F400]
-            text-black
-            flex
-            items-center
-            justify-center
-            transition-all
-            duration-300
-            hover:scale-110
-            hover:rotate-6
-            "
+            onClick={() => {
+              !isAdded && dispatch(addToCart(product))
+              dispatch(toggleCart());
+            }}
+            disabled={isAdded}
+            className={` h-12 w-12 rounded-2xl flex items-center justify-center  transition-all duration-300
+                    ${isAdded ? "bg-green-500 cursor-not-allowed" : "bg-[#C8F400] text-black hover:scale-110 hover:rotate-6"} `}
           >
-            <ShoppingBag size={20} />
+            {isAdded ? (
+              <Check size={22} strokeWidth={3} className="text-white" />
+            ) : (
+              <ShoppingBag size={20} />
+            )}
           </button>
-
         </div>
       </div>
     </div>
