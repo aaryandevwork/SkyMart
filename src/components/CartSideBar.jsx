@@ -3,6 +3,7 @@ import CartItem from "./CartItem";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart, setCartValue, toggleCart } from "../features/cartSlice";
 import { useEffect, useMemo } from "react";
+import { toast } from "react-toastify";
 
 const CartSideBar = () => {
   let { cartItems, isCartOpen ,cartValue } = useSelector((state) => state.cart);
@@ -97,7 +98,10 @@ const CartSideBar = () => {
             </div>
 
             <button
-              onClick={() => dispatch(clearCart())}
+              onClick={() => {
+                toast.success(`Order Placed..`);
+                dispatch(clearCart())
+              }}
               className="w-full h-12 rounded-2xl bg-[#C8F400]
             text-black font-semibold text-lg
             hover:bg-lime-300 transition

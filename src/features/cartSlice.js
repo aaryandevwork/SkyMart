@@ -20,7 +20,6 @@ const cartSlice = createSlice({
             state.isCartOpen = !state.isCartOpen;
         },
         addToCart : (state, action) => {
-            console.log("inside cart slice : ",action.payload);
             const existingItem = state.cartItems.find((item) => item.id === action.payload.id);
             
             if(existingItem){
