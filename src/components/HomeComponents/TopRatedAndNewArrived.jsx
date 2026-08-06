@@ -8,7 +8,7 @@ import {
   Tag,
 } from "lucide-react";
 
-import { products } from '../data/data';
+import { products } from '../../data/data';
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 

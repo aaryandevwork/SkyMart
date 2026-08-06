@@ -1,6 +1,6 @@
 import {ArrowRight, Laptop, Shirt, Sofa, House, Dumbbell, Watch } from "lucide-react";
 import { useNavigate } from "react-router";
-import { products } from "../data/data";
+import { products } from "../../data/data";
 
 const categories = [
   {
