@@ -170,13 +170,9 @@ npm run build
 
 ---
 
-## 👨‍💻 Author
+## 👨‍💻 Developed by
 
 **Aaryan Kumar Dewangan**
-
-LinkedIn: *(Add your profile)*
-
-GitHub: *(Add your profile)*
 
 ---
 
