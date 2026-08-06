@@ -8,6 +8,7 @@ const saveCart = (cartItems) => {
 const initialState = {
     cartItems : JSON.parse(localStorage.getItem("cart")) || [],
     isCartOpen : false,
+    cartValue : 0,
 }
 
 
@@ -53,10 +54,17 @@ const cartSlice = createSlice({
         removeFromCart : (state,action) => {
             state.cartItems = state.cartItems.filter((item) => item.id !== action.payload);
             saveCart(state.cartItems);
+        },
+        clearCart : (state) => {
+            state.cartItems = [];
+            saveCart(state.cartItems);
+        },
+        setCartValue : (state, action) => {
+            state.cartValue = action.payload;
         }
         
     }
 })
 
-export const { addToCart,increaseQuantity ,decreaseQuantity, removeFromCart ,toggleCart } = cartSlice.actions;
+export const { addToCart,increaseQuantity ,decreaseQuantity, removeFromCart ,toggleCart ,clearCart, setCartValue } = cartSlice.actions;
 export default cartSlice.reducer;

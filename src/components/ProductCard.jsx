@@ -24,6 +24,7 @@ const ProductCard = ({ product }) => {
       hover:-translate-y-2
       hover:border-lime-400/30
       hover:shadow-[0_20px_40px_rgba(163,230,53,0.08)]
+      flex flex-col h-full
       "
     >
       {/* Product Image */}
@@ -85,7 +86,7 @@ const ProductCard = ({ product }) => {
 
       {/* Body */}
 
-      <div className="p-5">
+      <div className="p-5 flex flex-col flex-1">
         {/* Brand */}
 
         <p className="text-xs text-zinc-500">{product.brand}</p>
@@ -106,37 +107,39 @@ const ProductCard = ({ product }) => {
           <span className="text-zinc-500">({product.reviews})</span>
         </div>
 
-        <div className="w-full h-[1px] bg-white my-2"></div>
-        {/* Price */}
+        <div className="mt-auto" >
+          <div className="w-full h-[1px] bg-white my-2"></div>
+          {/* Price */}
 
-        <div className="mt-2 flex  items-center justify-between">
-          <div className="flex items-end gap-2">
-            <span className="text-sm font-bold text-[#C8F400]">
-              ${product.price}
-            </span>
+          <div className="mt-2 flex  items-center justify-between">
+            <div className="flex items-end gap-2">
+              <span className="text-sm font-bold text-[#C8F400]">
+                ${product.price}
+              </span>
 
-            <span className="text-sm text-zinc-500 line-through">
-              ${product.oldPrice}
-            </span>
+              <span className="text-sm text-zinc-500 line-through">
+                ${product.oldPrice}
+              </span>
+            </div>
+
+            {/* Add To Cart */}
+
+            <button
+              onClick={() => {
+                !isAdded && dispatch(addToCart(product));
+                dispatch(toggleCart());
+              }}
+              disabled={isAdded}
+              className={` h-12 w-12 rounded-2xl flex items-center justify-center  transition-all duration-300
+              ${isAdded ? "bg-green-500 cursor-not-allowed" : "bg-[#C8F400] text-black hover:scale-110 hover:rotate-6"} `}
+            >
+              {isAdded ? (
+                <Check size={22} strokeWidth={3} className="text-white" />
+              ) : (
+                <ShoppingBag size={20} />
+              )}
+            </button>
           </div>
-
-          {/* Add To Cart */}
-
-          <button
-            onClick={() => {
-              !isAdded && dispatch(addToCart(product))
-              dispatch(toggleCart());
-            }}
-            disabled={isAdded}
-            className={` h-12 w-12 rounded-2xl flex items-center justify-center  transition-all duration-300
-                    ${isAdded ? "bg-green-500 cursor-not-allowed" : "bg-[#C8F400] text-black hover:scale-110 hover:rotate-6"} `}
-          >
-            {isAdded ? (
-              <Check size={22} strokeWidth={3} className="text-white" />
-            ) : (
-              <ShoppingBag size={20} />
-            )}
-          </button>
         </div>
       </div>
     </div>

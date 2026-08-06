@@ -4,15 +4,32 @@ import { categories, products, sortOptions } from "../data/data";
 import { Search } from "lucide-react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useSearchParams } from "react-router";
 
 const ShopPage = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const categoryFromURL = searchParams.get("category") || "All";
+
+  const [selectedCategory, setSelectedCategory] = useState(categoryFromURL);
   const [sortBy, setSortBy] = useState("Featured");
   const [search, setSearch] = useState("");
 
-//   let data = useSelector(state => state.cart);
-// console.log("data from cart",data)
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+
+    if (category === "All") {
+      setSearchParams({});
+    } else {
+      setSearchParams({
+        category,
+      });
+    }
+  };
+
+  useEffect(() => {
+    setSelectedCategory(categoryFromURL || "All");
+  }, [categoryFromURL]);
 
   const getFilteredData = () => {
     let filteredData = [...products];
@@ -46,7 +63,7 @@ const ShopPage = () => {
         filteredData.sort((a, b) => b.featured - a.featured);
         break;
     }
-    
+
     return filteredData;
   };
 
@@ -96,7 +113,8 @@ const ShopPage = () => {
           {/* Category */}
 
           <select
-            onChange={(e) => setSelectedCategory(e.target.value)}
+            value={selectedCategory}
+            onChange={(e) => handleCategoryChange(e.target.value)}
             className="lg:col-span-2 bg-[#1d1d1d] rounded-2xl px-5 text-white transition-all
     duration-300
     focus:border-lime-400

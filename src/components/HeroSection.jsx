@@ -1,6 +1,12 @@
 import { ArrowRight } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 
 const HeroSection = () => {
+  
+const { user } = useSelector(state => state.auth);
+const navigate = useNavigate();
+
   return (
     <section className="max-w-7xl mx-auto mt-5">
 
@@ -35,7 +41,7 @@ const HeroSection = () => {
               <br />
 
               <span className="text-[#C8F400]">
-                Aaryan!
+                {user.name}
               </span>
 
             </h1>
@@ -47,7 +53,9 @@ const HeroSection = () => {
 
             <div className="flex gap-5 mt-10">
 
-              <button className="flex items-center gap-2 bg-[#C8F400] text-sm text-black px-6 rounded-2xl font-semibold hover:scale-105 transition">
+              <button
+              onClick={() => navigate("/main/shop")}
+               className="flex items-center gap-2 bg-[#C8F400] text-sm text-black px-6 rounded-2xl font-semibold hover:scale-105 transition">
 
                 Shop Now
 
@@ -55,7 +63,9 @@ const HeroSection = () => {
 
               </button>
 
-              <button className="border border-white/20 px-6 py-3 rounded-2xl text-white hover:bg-white/5 transition">
+              <button
+              onClick={() => navigate("/main/shop")}
+              className="border border-white/20 px-6 py-3 rounded-2xl text-white hover:bg-white/5 transition">
                 View All Products
               </button>
 

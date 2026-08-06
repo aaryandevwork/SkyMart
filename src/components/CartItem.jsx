@@ -7,7 +7,7 @@ const CartItem = ({ product }) => {
     const dispatch = useDispatch();
 
     return (
-        <div className="border border-zinc-700 rounded-2xl p-4 flex gap-4">
+        <div className="border border-zinc-700 rounded-2xl p-4 flex gap-4 mt-2">
             <img
               src={product.image}
               className="w-18 h-18 rounded-xl object-cover bg-white"

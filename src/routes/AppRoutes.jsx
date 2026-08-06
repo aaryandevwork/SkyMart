@@ -17,24 +17,6 @@ import ProductDetailPage from "../pages/ProductDetailPage";
 
 const AppRoutes = () => {
 
-  const dispatch = useDispatch();
-
-  const hydrateUser = () => {
-    console.log("hydrate user");
-    let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
-
-    console.log("loggedInUser",loggedInUser);
-    if(!loggedInUser){
-      return;
-    }
-    dispatch(addUser(loggedInUser));
-  }
-
-  useEffect(() => {
-    hydrateUser();
-  } , [])
-
-
   let Router = createBrowserRouter([
     {
       path: "/",

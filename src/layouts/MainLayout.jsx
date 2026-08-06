@@ -5,17 +5,15 @@ import { useState } from "react";
 import CartSideBar from "../components/CartSideBar";
 
 const MainLayout = () => {
-  const [isCartOpen, setIsCartOpen] = useState(false);
   return (
     <div className="bg-[#0b0b0b] h-full">
       <div className="bg-[#0b0b0b] text-white">
-        <Navbar setIsCartOpen={setIsCartOpen}/>
+        <Navbar />
       </div>
-      <CartSideBar
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-      />
+      <CartSideBar />
+      <div className="pt-20">
       <Outlet />
+      </div>
       <Footer />
     </div>
   );

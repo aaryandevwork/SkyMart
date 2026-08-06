@@ -1,19 +1,21 @@
 import {ArrowRight, Laptop, Shirt, Sofa, House, Dumbbell, Watch } from "lucide-react";
+import { useNavigate } from "react-router";
+import { products } from "../data/data";
 
 const categories = [
   {
     id: 1,
     icon: Laptop,
     title: "Electronics",
-    items: 17,
+    items: products.filter((p) => p.category === "Electronics").length,
     iconBg: "bg-blue-100",
     iconColor: "text-blue-600",
   },
   {
     id: 2,
     icon: Shirt,
-    title: "Clothing",
-    items: 2,
+    title: "Fashion",
+    items: products.filter((p) => p.category === "Fashion").length,
     iconBg: "bg-pink-100",
     iconColor: "text-pink-600",
   },
@@ -21,7 +23,7 @@ const categories = [
     id: 3,
     icon: Sofa,
     title: "Furniture",
-    items: 3,
+    items: products.filter((p) => p.category === "Furniture").length,
     iconBg: "bg-orange-100",
     iconColor: "text-orange-600",
   },
@@ -29,7 +31,7 @@ const categories = [
     id: 4,
     icon: House,
     title: "Home",
-    items: 14,
+    items: products.filter((p) => p.category === "Home").length,
     iconBg: "bg-green-100",
     iconColor: "text-green-600",
   },
@@ -37,7 +39,7 @@ const categories = [
     id: 5,
     icon: Dumbbell,
     title: "Sports",
-    items: 8,
+    items: products.filter((p) => p.category === "Sports").length,
     iconBg: "bg-red-100",
     iconColor: "text-red-600",
   },
@@ -45,12 +47,15 @@ const categories = [
     id: 6,
     icon: Watch,
     title: "Accessories",
-    items: 6,
+    items: products.filter((p) => p.category === "Accessories").length,
     iconBg: "bg-purple-100",
     iconColor: "text-purple-600",
   },
 ];
 const CategorySection = () => {
+
+  const navigate = useNavigate();
+
   return (
     <section className="max-w-7xl mx-auto mt-16">
       {/* Heading */}
@@ -58,7 +63,9 @@ const CategorySection = () => {
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-2xl font-bold font-syne text-white">Shop by Category</h2>
 
-        <button className="flex text-sm items-center gap-2 text-lime-400 hover:gap-3 transition-all font-medium">
+        <button
+        onClick={() => navigate("/main/shop")}
+        className="flex text-sm items-center gap-2 text-lime-400 hover:gap-3 transition-all font-medium">
           View All
           <ArrowRight size={18} />
         </button>
@@ -72,6 +79,7 @@ const CategorySection = () => {
 
           return (
             <div
+            onClick={() => navigate(`/main/shop?category=${encodeURIComponent(category.title)}`)}
               key={category.id}
               className="group bg-white rounded-xl py-6 px-6 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
             >

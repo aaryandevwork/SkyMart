@@ -1,16 +1,23 @@
 import { Package, TrendingUp, Star, Tag } from "lucide-react";
+import { useSelector } from "react-redux";
+
+
+
+const StatsSection = () => {
+
+const { cartValue,cartItems } = useSelector(state => state.cart);
 
 const stats = [
   {
     icon: Package,
-    value: "0",
+    value: cartItems.length,
     title: "Cart Items",
     subtitle: "In your bag",
     color: "bg-lime-500/15 text-lime-400",
   },
   {
     icon: TrendingUp,
-    value: "$0.00",
+    value: cartValue,
     title: "Cart Value",
     subtitle: "Ready to checkout",
     color: "bg-blue-500/15 text-blue-400",
@@ -31,7 +38,6 @@ const stats = [
   },
 ];
 
-const StatsSection = () => {
   return (
     <section className="max-w-7xl mx-auto mt-8">
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">

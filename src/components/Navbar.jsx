@@ -6,10 +6,18 @@ import { toggleCart } from "../features/cartSlice";
 
 const Navbar = ({}) => {
   const dispatch = useDispatch();
-  const { isCartOpen } = useSelector(state => state.cart);
+  const { isCartOpen,cartItems } = useSelector((state) => state.cart);
 
   return (
-    <header className="w-full border-b border-white/10">
+    <header className=" fixed
+    top-0
+    left-0
+    w-full
+    z-50
+    bg-[#0B0B0B]/80
+    backdrop-blur-xl
+    border-b
+    border-white/10">
       <nav className="max-w-7xl mx-auto h-18 flex items-center justify-between">
         {/* Logo */}
 
@@ -25,7 +33,7 @@ const Navbar = ({}) => {
         </div>
 
         {/* Nav Links */}
-        
+
         <div className="hidden md:flex items-center gap-6 font-medium text-sm">
           <NavLink
             className={({ isActive }) => {
@@ -77,8 +85,31 @@ const Navbar = ({}) => {
 
           {/* Cart */}
 
-          <button className="w-10 h-10 rounded-xl border border-white/10 flex justify-center items-center hover:bg-zinc-900 transition">
+          <button className="relative w-10 h-10 rounded-xl border border-white/10 flex justify-center items-center hover:bg-zinc-900 transition">
             <ShoppingCart onClick={() => dispatch(toggleCart())} size={18} />
+            {cartItems.length > 0 && (
+              <span
+                className="
+            absolute
+            -top-2
+            -right-2
+            min-w-6
+            h-6
+            px-1
+            rounded-full
+            bg-[#C8F400]
+            text-black
+            text-xs
+            font-bold
+            flex
+            items-center
+            justify-center
+            shadow-lg
+          "
+              >
+                {cartItems.length}
+              </span>
+            )}
           </button>
 
           {/* Logout */}

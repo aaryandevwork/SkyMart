@@ -16,6 +16,7 @@ import {
 import { products } from "../data/data";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, decreaseQuantity, increaseQuantity, toggleCart } from "../features/cartSlice";
+import ProductCard from "../components/ProductCard";
 
 const ProductDetailPage = () => {
   const { id } = useParams();
@@ -23,12 +24,20 @@ const ProductDetailPage = () => {
   const dispatch = useDispatch();
   const { cartItems } = useSelector((state) => state.cart);
 
+  //getProduct
   const product = products.find((item) => item.id === Number(id));
 
+  //check product in cart
   const cartItem = cartItems.find((item) => item.id === product.id);
-
   const isAdded = !!cartItem;
 
+  //get relatedProduct using category
+  const relatedProducts = products.filter((item) => item.category === product.category && item.id !== product.id).slice(0,5);
+
+  //get current index for next and previous product
+  const currentIndex = products.findIndex((item) => item.id === Number(id));
+
+  // if product not found
   if (!product) {
     return (
       <div className="h-screen flex items-center justify-center text-white">
@@ -201,7 +210,8 @@ const ProductDetailPage = () => {
 
           <div className="grid grid-cols-2 gap-4 mt-10">
             <button
-              onClick={() => navigate(`/main/products/${id - 1}`)}
+              disabled = {currentIndex === 0}
+              onClick={() => navigate(`/main/products/${products[currentIndex - 1].id}`)}
               className="text-white h-14 rounded-2xl bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center gap-2"
             >
               <ChevronLeft size={18} />
@@ -209,7 +219,8 @@ const ProductDetailPage = () => {
             </button>
 
             <button
-              onClick={() => navigate(`/main/products/${Number(id) + 1}`)}
+            disabled = {currentIndex === products.length - 1}
+              onClick={() => navigate(`/main/products/${products[currentIndex + 1].id}`)}
               className="h-14 rounded-2xl bg-[#C8F400] text-black hover:bg-[#a1b645] font-semibold flex items-center justify-center gap-2"
             >
               Next
@@ -217,6 +228,12 @@ const ProductDetailPage = () => {
             </button>
           </div>
         </div>
+      </div>
+        <h1 className=" text-white text-3xl my-4 font-syne font-bold">Related Products</h1>
+       <div className="grid mt-12 gap-7 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
+        {relatedProducts.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
       </div>
     </section>
   );
